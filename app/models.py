@@ -1,5 +1,41 @@
 import re
 
+class Book(object):
+    """class to create instance of books"""
+    books_list=[]
+
+    def __init__(self, ISBN, title, author, date_published, category):
+        self.ISBN = ISBN
+        self.title = title
+        self.author = author
+        self.date_published = date_published
+
+        self.books = {}
+
+        #add a book or modify a book
+    def put(self, title, author, ISBN):
+        
+        book = {title:author}
+        self.books[ISBN] = book
+		
+        return (self.books[ISBN])
+
+        #delete a book  
+    def delete(self, ISBN):
+   
+        del self.books[ISBN]
+        
+        return (self.books)
+
+        #retrieve all books
+    def get_all(self):
+        return self.books
+
+
+    def get_single_book(self, ISBN):
+    	return (self.books[ISBN])
+
+
 class User(object):
     
     """ user_list will contain a dictionery of created users"""
@@ -8,6 +44,7 @@ class User(object):
     def __init__(self, email, password):
         self.email = email
         self.password = password
+
         self.users = []
 
     def save_user(self,email,password):
