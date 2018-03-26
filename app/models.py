@@ -12,6 +12,20 @@ class Book(object):
 
         self.books = {}
 
+    # def add_a_book(self, ISBN, title, author, date_published, category):
+
+    #     books_list = []
+
+    #     books_list["category"]= category
+    #     books_list["title"]= title
+    #     books_list["author"]= author
+    #     books_list["date_published"]=date_published
+    #     books_list["ISBN"]=ISBN
+
+
+    #     Book.books_list.append(books_list)
+    #     return books_list
+
         #add a book or modify a book
     def put(self, title, author, ISBN):
         
