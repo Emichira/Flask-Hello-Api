@@ -1,12 +1,10 @@
+import os
+from flask import Flask, render_template, request
 from flask_api import FlaskAPI
+from flask import request, jsonify, abort,session
+from models import User, Book
 
-# local import
-from instance.config import app_config
 
-def create_app(config_name):
-    #create instance of flaskapi
-    app=FlaskAPI(__name__,instance_relative_config=True)
-    app.config.from_object(app_config[config_name])
-    app.config.from_pyfile('config.py')
+create_app = Flask(__name__, instance_relative_config=True)
 
-    return app
+from app import views
