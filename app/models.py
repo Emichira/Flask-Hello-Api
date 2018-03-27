@@ -55,11 +55,12 @@ class User(object):
     """ user_list will contain a dictionery of created users"""
     user_list=[]
     
-    def __init__(self, email, password):
+    def __init__(self, email, password, role):
         self.email = email
         self.password = password
+        self.role = role
 
-        self.users = []
+        self.users = {}
 
     def save_user(self,email,password):
         """
@@ -143,3 +144,8 @@ class User(object):
         if not re.match(r"^[A-Za-z0-9\.\+_-]*$",password):
             return True
         return False
+
+class Admin(User):
+    
+    def __init__(self, email, password, role="admin"):
+        super(Admin, self).__init__()

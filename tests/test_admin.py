@@ -1,18 +1,30 @@
 import unittest
+<<<<<<< HEAD
 import os
 import json
 from app import create_app
 from app.models import Book
 from flask import jsonify
+=======
+import json
+from app import create_app
+from app.models import Book, User
+from flask import jsonify
+import run
+>>>>>>> d37a60234166bd7746c8d4a98125128239ededd1
 
 #class to respresent admin testcase
 class AdminApiEndpointTestCase(unittest.TestCase):
     
         def setUp(self):
+<<<<<<< HEAD
             self.app=create_app(config_name="testing")
                     #get the app test client
             self.client = self.app.test_client
                     #data to use
+=======
+            self.client = run.create_app.test_client
+>>>>>>> d37a60234166bd7746c8d4a98125128239ededd1
             self.book= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
             "category": "Good Reads"}
             self.testbook= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
