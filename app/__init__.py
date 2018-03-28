@@ -52,7 +52,7 @@ def logout():
         return jsonify({"message": "Logout successful"})
     return jsonify({"message": "You are not logged in"}) 
 
-@create_app.route('/api/v1/businesses', methods=['POST','GET'])
+@create_app.route('/api/v1/books', methods=['POST','GET'])
 def add_book():
         if request.method == 'POST':
             ISBN = request.json.get('ISBN')
