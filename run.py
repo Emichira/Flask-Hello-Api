@@ -1,6 +1,9 @@
 
 from app import User, create_app, Book
 from app import reset_password, login, register, logout, add_book
+from flask import Flask
+
+create_app = Flask(__name__)
 
 create_app.add_url_rule(
     '/api/v1/auth/register', view_func=register.as_view(

@@ -7,7 +7,7 @@ import run
 
 class UserTestCase(unittest.TestCase):
     def setUp(self):
-        self.client = run.app.test_client
+        self.client = run.create_app.test_client
         self.login={"username":"emmanuel","password":"abc123"}
         self.reset={"email":"emmanuelmichira@gmail.com","password":"123456","confirm_password":"123456"}
         self.user={"username":"collins","email":"emmanuelmichira@gmail.com","password":"123456","confirm_password":"123456"}
