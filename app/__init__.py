@@ -2,9 +2,7 @@ import os
 from flask import Flask, jsonify, abort, make_response, request, render_template, session
 from flask_restful import reqparse, abort, Resource
 from models import User, Book
-
-create_app = Flask(__name__, instance_relative_config=True)
-create_app.secret_key = os.urandom(24)
+from run import create_app
 
 user = []
 user_list = []
@@ -36,7 +34,7 @@ def reset_password(email,password,confirm_password):
             
             return jsonify({'message': "Account does not exist"})
 
-@create_app.route('/api/v1/auth//register' , methods = ['GET' , 'POST'])
+@create_app.route('/api/v1/auth//register', methods = ['GET' , 'POST'])
 def register(email, password):
     if request.method == 'POST':
         if new_user["password"] == new_user["password"]:
