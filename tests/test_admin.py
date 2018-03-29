@@ -1,6 +1,6 @@
 import unittest
 import json
-from app import create_app
+from run import create_app
 from app.models import Book, User
 from flask import jsonify
 import run
