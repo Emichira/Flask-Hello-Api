@@ -29,11 +29,11 @@ Create virtualenv to a directory (eg. myproject)
 
 #### Activate the virtualenv
 
-### Ubuntu/Mac
+#### Ubuntu/Mac
 
     * source .env
 
-### Windows
+#### Windows
 
     ```
     mypthon\Scripts\activate
