@@ -46,7 +46,7 @@ Install the dependencies
     pip install -r requirements.txt
     ```
 
-# Postman Tests
+## Postman Tests
 
     *  To check on other postman tests, Look in the folder Resources
 
