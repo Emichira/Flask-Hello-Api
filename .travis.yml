@@ -7,4 +7,7 @@ install:
   - pip install -r requirements.txt
   - pip install coveralls
 
-  sudo: enabled
+# command to run tests
+script: nosetests --with-coverage
+after_success:
+  - coveralls
