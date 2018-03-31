@@ -9,8 +9,7 @@ import run
 class AdminApiEndpointTestCase(unittest.TestCase):
     
         def setUp(self):
-            self.app=create_app(config_name="testing")
-                    #get the app test client
+            #get the app test client
             self.client = run.create_app.test_client
                                 #data to use
             self.book= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
