@@ -10,28 +10,59 @@ class Book(object):
         self.category = category
         self.books_list=[]
 
-        #add a book or modify a book
-    def put(self, title, author, ISBN):
+        #add a new book
+    def put(self, ISBN, title, author, date_published, category):
         
-        book = {title:author}
-        self.books_list[ISBN] = book
-		
-        return (self.books_list[ISBN])
+        books_dict = {}
+
+        for book in self.books_list:
+            if title == book["title"]:
+                response = {"message":"Please enter another book name, book name already exists"}
+                return response
+        
+        if len(title) < 2:
+            response = {"message":"Input a book name that is atleast 2 characters"}
+            return response
+
+        elif re.match("0?[1-9]|[12][0-9]|3[01])[/ -](0?[1-9]|1[12])[/ -](19[0-9]{2}|[2][0-9][0-9]{2}", date_published):
+            books_dict['ISBN'] = str(len(self.books_list) + 1)
+            books_dict['title'] = title
+            books_dict['author'] = author
+            books_dict['category'] = category
+            books_dict['date_published'] = date_published
+
+            self.books_list.append(books_dict)
+
+        response = {"message":"Book added successfully"}
+        return response
 
         #delete a book  
-    def delete(self, ISBN):
-   
-        del self.books_list[ISBN]
-        
-        return (self.books_list)
+    def delete(self, ISBN, title):
+        for book in self.books_list:
+            if title == book["title"]:
+                if ISBN == book["ISBN"]:
+                    self.books_list.remove(book)
+                    response = {"message":"Book deleted successfully"}
+                    return response
+            else:
+                response = {"message":"Unsuccessful, Please delete an available book"}
+                return response
+        response = {"message":"The book you want to delete cannot be found"}
+        return response
 
-        #retrieves all books
+        #retrieves all books stored in the books list
     def get_all(self):
         return self.books_list
 
-
+    """ Get a books by its ISBN ID"""
     def get_single_book(self, ISBN):
-    	return (self.books_list[ISBN])
+        #Check if book exists in books_list
+        for book in self.books_list:
+            if ISBN == book['ISBN']:
+                return book
+            else:
+                response = {"message":"Book not found. Please search an already created book"}
+        return response 
 
 
 class User(object):
