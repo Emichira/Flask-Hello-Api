@@ -66,53 +66,70 @@ class Book(object):
 
 
 class User(object):
-    
+    """ User class handles registration and login of users """
     """ user_list will contain a dictionery of created users"""
-    user_list=[]
     
     def __init__(self, email, password, role):
         self.email = email
         self.password = password
         self.role = role
+        self.user_list=[]
 
-        self.users = {}
+    def register(self, email, password, confirm_password):
+        """ Create user accounts by user info to empty dictonary """
+        user_dict = {}
 
-    def save_user(self,email,password):
+        for user in self.user_list:
+            if email == user['email']:
+                response = {"message":"Account already exists. Please login or Recover account"}
+                return response
+        if len(password) < 6:
+            response = {"message":"Input a password that is at least 6 characters long"}
+            return response
+
+        elif not re.match(r"(^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-z]+$)", email):
+            response = {"message":"Please a provide a valid email"}
+            return response
+
+        elif password == confirm_password:
+            user_dict['email'] = email
+            user_dict['password'] = password
+
+            self.user_list.append(user_dict)
+        else:
+            response = {"message":"Password do not match"}
+            return response
+        response = {"message":"Successfully registered a user account"}
+        return response
+
+    def login(self, email, password):
+        """ Login user by checking if user exists in
+            users_lisr
         """
-        this method gets user details as parameters,
-        uses them to create a dict and append dict
-        to the user_list
-        """
-        new_user={}
+        for user in self.user_list:
+            if email == user['email']:
+                if password == user['password']:
+                    response = {"message":"You have successfully logged into Hello Library"}
+                    return response
+                response = {"message":"Password Incorrect"}
+                return response
+        response = {"message":"You have no account,please sign up"}
+        return response
 
-        new_user["email"]=email
-        new_user["password"]=password
+    def reset_password(self, new_password, confirm_password):
+        for user in self.user_list:
+            if new_password == confirm_password:
+                user['password'] = new_password
+                response = {"message":"Password changed successful"}
+                return response
+            response = {"message":"Password and confirm password should match"}
+            return response
+        response = {"message":"User account does not exist, sign up!"} 
+        return response
 
-        if new_user["password"] == new_user["password"]:
-            User.user_list.append(new_user)
-            
-            message="successfully registered user"
-            return message
-
-        
-        message="Invalid password, sign upto create an account"
-        return message
-
-    @classmethod
-    def login(cls,email,password):
-        """logs in user by checking if they exist in the list"""
-        for user in cls.user_list:
-            if user["email"]==email and user["password"]==password:
-                message="you have successfully logged in"
-                return message
-            
-            message="email or email is invalid"
-            return message  
-
-    @classmethod
-    def check_email_exists(cls,email):
+    def check_email_exists(self, email):
         """validates email to avoid two accounts with same user email"""
-        for user in cls.user_list:
+        for user in self.user_list:
             if user.get("email") == email:
                 return True
             
@@ -125,23 +142,6 @@ class User(object):
 
         return False
 
-    @staticmethod
-    def reset_password(email,password,confirm_password):
-        for user in User.user_list:
-            if user["email"] == email:
-                if password == confirm_password:
-                    user["password"]=password
-                    user["confirm_password"]=confirm_password
-                    message="Password reset was successful"
-                    return message
-
-                else:
-                    message="Password and confirm password must be the same"
-                    return message
-            else:
-                message="Account does not exist"
-                return message
-    
     @staticmethod
     def validate_email(email):
         if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
