@@ -2,39 +2,36 @@ import re
 
 class Book(object):
     """class to create instance of books"""
-    books_list=[]
-
     def __init__(self, ISBN, title, author, date_published, category):
         self.ISBN = ISBN
         self.title = title
         self.author = author
         self.date_published = date_published
         self.category = category
-
-        self.books = {}
+        self.books_list=[]
 
         #add a book or modify a book
     def put(self, title, author, ISBN):
         
         book = {title:author}
-        self.books[ISBN] = book
+        self.books_list[ISBN] = book
 		
-        return (self.books[ISBN])
+        return (self.books_list[ISBN])
 
         #delete a book  
     def delete(self, ISBN):
    
-        del self.books[ISBN]
+        del self.books_list[ISBN]
         
-        return (self.books)
+        return (self.books_list)
 
-        #retrieve all books
+        #retrieves all books
     def get_all(self):
         return self.books_list
 
 
     def get_single_book(self, ISBN):
-    	return (self.books[ISBN])
+    	return (self.books_list[ISBN])
 
 
 class User(object):
