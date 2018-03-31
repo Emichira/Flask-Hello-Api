@@ -9,6 +9,21 @@ Hello-Books is a simple application that helps manage a library and its processe
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8d4476e1c37546cc8608ac5cbc290eeb)](https://www.codacy.com/app/emichira/Flask-Hello-Api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=emichira/Flask-Hello-Api&amp;utm_campaign=Badge_Grade)
 <!-- [![Code Health](https://landscape.io/github/Emichira/Flask-Hello-Api/api/landscape.svg?style=flat)](https://landscape.io/github/Emichira/Flask-Hello-Api/api) -->
 
+## Endpoints
+
+ Endpoint                                  |Functionality                    |
+|------------------------------------------|---------------------------------|
+ POST /auth/login                          | Logs a user in                  |
+ POST /auth/register                       | Register a user                 |
+ POST /bucketlists/                        | Create a new bucket list        |
+ GET /bucketlists/                         | List all the created bucketlists|
+ GET /bucketlists/<id>                     | Get single bucket list          |
+ PUT /bucketlists/<id>                     | Update this bucket list         |
+ DELETE /bucketlists/<id>                  | Delete this single bucket list  |
+ POST /bucketlists/<id>/items/             | Create a new item in bucket list|
+ PUT /bucketlists/<id>/items/<item_id>     | Update a bucket list item       |
+ DELETE /bucketlists/<id>/items/<item_id>  | Delete an item in a bucket list |
+
 ## Installation & Setup
 
 1. Download & Install Python
@@ -35,14 +50,11 @@ Hello-Books is a simple application that helps manage a library and its processe
  * On the terminal type `python run.py` to start the application
 
 ## Testing
-To run the tests for the app, and see the coverage, run
-```
-nosetests --with-coverage
-```
+To run the tests for the app, run;
 
-## Postman Tests
-
-    *  To check on other postman tests, Look in the folder Resources
+	```
+	nosetests -v
+	```
 
 ## Authors
 
