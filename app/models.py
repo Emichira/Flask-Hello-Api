@@ -1,17 +1,30 @@
 import re
 
 class Book(object):
+    book = [
+        {
+            'ISBN': 00001,
+            'title': 'MacBeth',
+            'author': 'William Shakespear',
+            'date_published': '02/02/2018',
+            'category': 'History'
+        },
+        {
+            'ISBN': 00002,
+            'title': 'Long Walk To Freedom',
+            'author': 'Nelson Mandela',
+            'date_published': '02/02/2018',
+            'category': 'Biography'
+        }
+    ]
+    
     """class to create instance of books"""
-    def __init__(self, ISBN, title, author, date_published, category):
-        self.ISBN = ISBN
-        self.title = title
-        self.author = author
-        self.date_published = date_published
-        self.category = category
+    def __init__(self):
+        """ list to hold books a user creates """
         self.books_list=[]
 
-        #add a new book
-    def put(self, ISBN, title, author, date_published, category):
+    """Adds a new book """
+    def add_book(self, ISBN, title, author, date_published, category):
         
         books_dict = {}
 
@@ -24,7 +37,11 @@ class Book(object):
             response = {"message":"Input a book name that is atleast 2 characters"}
             return response
 
-        elif re.match("0?[1-9]|[12][0-9]|3[01])[/ -](0?[1-9]|1[12])[/ -](19[0-9]{2}|[2][0-9][0-9]{2}", date_published):
+        elif not re.match("0?[1-9]|[12][0-9]|3[01])[/ -](0?[1-9]|1[12])[/ -](19[0-9]{2}|[2][0-9][0-9]{2}", date_published):
+            response = {"message": "Date published should be in the format DD/MM/YY"}
+            return response
+        
+        elif len(author) > 1:
             books_dict['ISBN'] = str(len(self.books_list) + 1)
             books_dict['title'] = title
             books_dict['author'] = author
@@ -36,7 +53,7 @@ class Book(object):
         response = {"message":"Book added successfully"}
         return response
 
-        #delete a book  
+    """Delete a book  """
     def delete(self, ISBN, title):
         for book in self.books_list:
             if title == book["title"]:
@@ -50,7 +67,8 @@ class Book(object):
         response = {"message":"The book you want to delete cannot be found"}
         return response
 
-        #retrieves all books stored in the books list
+    """ Retrieves all books stored in the books list"""
+    
     def get_all(self):
         return self.books_list
 
@@ -66,16 +84,29 @@ class Book(object):
 
 
 class User(object):
+    user = [
+        {
+            'email': 'abc@abc.com',
+            'password': '12345678',
+            'role': 'user'
+        },
+        {
+            'email': 'emmanuel@abc.com',
+            'password': '87654321',
+            'role': 'admin'
+        }
+        ]
+    # return user
     """ User class handles registration and login of users """
     """ user_list will contain a dictionery of created users"""
     
-    def __init__(self, email, password, role):
-        self.email = email
-        self.password = password
-        self.role = role
+    def __init__(self):
+        # self.email = email
+        # self.password = password
+        # self.role = role
         self.user_list=[]
 
-    def register(self, email, password, confirm_password):
+    def register(self, email, password, confirm_password, role):
         """ Create user accounts by user info to empty dictonary """
         user_dict = {}
 
@@ -83,7 +114,7 @@ class User(object):
             if email == user['email']:
                 response = {"message":"Account already exists. Please login or Recover account"}
                 return response
-        if len(password) < 6:
+        if len(password) < 8:
             response = {"message":"Input a password that is at least 6 characters long"}
             return response
 
@@ -113,7 +144,7 @@ class User(object):
                     return response
                 response = {"message":"Password Incorrect"}
                 return response
-        response = {"message":"You have no account,please sign up"}
+        response = {"message":"User account does not exist, please sign up"}
         return response
 
     def reset_password(self, new_password, confirm_password):
