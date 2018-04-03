@@ -141,10 +141,11 @@ def get_single_book():
 
 """Endpoint for deleting a book by its ISBN number"""
 @app.route('/api/v1/books/ISBN', methods=['DELETE'])
-def delete(ISBN):
-    if session.get('title') is not None:
+def delete():
+    if session.get('title') and session.get('ISBN') is None:
         if request.method == "DELETE":
             title = session["title"]
+            ISBN = session['ISBN']
             delete_book = book_object.delete(ISBN, title)
             return jsonify(delete_book)
     return jsonify({"message": "Please login to delete a book"})
