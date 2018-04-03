@@ -76,7 +76,11 @@ def register():
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
-    session['email'] = email and session['password'] == password
+    # session['email'] = email and session['password'] == password
+    if email is None:
+        return jsonify({'Message': 'Fill in  your email to register'})
+    elif password is None:
+        return jsonify({'Message': 'Fill in  your password to register'})
     msg = user_object.login(email, password)
     response = jsonify(msg)
     response.status_code = 200
@@ -141,3 +145,4 @@ def delete(ISBN):
             delete_book = book_object.delete(ISBN, title)
             return jsonify(delete_book)
     return jsonify({"message": "Please login to delete a book"})
+
