@@ -8,6 +8,9 @@ install:
   - pip install --user -r requirements.txt
   - pip install coveralls
 
+notifications:
+   webhooks: https://coveralls.io/webhook?repo_token=cwptp15kEnSH8qBehr0WTfrds5wAA52wf
+
 # command to run tests
 script:
   - pytest # or py.test for Python versions 3.5 and below
