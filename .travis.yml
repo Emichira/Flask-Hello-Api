@@ -17,6 +17,7 @@ script:
   - coverage erase
   - pytest # or py.test for Python versions 3.5 and below
   - nosetests --with-coverage --cover-package=app,models
+  - coverage report -m
   
 after_success:
   - coveralls

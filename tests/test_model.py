@@ -1,7 +1,9 @@
-import unittest, app
-from app.models import Book, User
+import unittest
 import json
+import os, sys
+sys.path.append("..")
 from app import app
+from app.models import Book, User
 from flask import jsonify
 import run
 
