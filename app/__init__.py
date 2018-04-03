@@ -2,7 +2,8 @@ import os
 from flask import Flask, jsonify, request, session, abort, make_response, render_template
 from flask_restful import reqparse, abort, Resource
 from models import User, Book
-from run import create_app
+
+app =  Flask(__name__)
 
 user = [
         {
@@ -42,14 +43,14 @@ user_dict = {}
 user_object = User()
 book_object = Book()
 
-@create_app.route('/')
+@app.route('/', methods=['GET'])
 def home_route():
     """ HomePage route """
     response = jsonify({'Message': 'Welcome to Hello Library'})
     return response
 
 """Endpoint for a new user to register."""
-@create_app.route('/api/v1/auth/register', methods=['POST'])
+@app.route('/api/v1/auth/register', methods=['POST'])
 def register():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -71,7 +72,7 @@ def register():
     return response
 
 """Endpoint for a user to login."""
-@create_app.route('/api/v1/auth/login', methods=['POST'])
+@app.route('/api/v1/auth/login', methods=['POST'])
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
@@ -82,7 +83,7 @@ def login():
     return response
 
 """Endpoint for a user reset password."""
-@create_app.route('/api/v1/auth/reset-password', methods=["POST"])
+@app.route('/api/v1/auth/reset-password', methods=["POST"])
 def reset_password(email,password,confirm_password):
     if session.get('email') is not None:
         if request.method == "POST":
@@ -93,7 +94,7 @@ def reset_password(email,password,confirm_password):
     return jsonify({"message": "User account does not exist, sign up"})
 
 """Endpoint for a user to logout."""
-@create_app.route('/api/v1/auth/logout', methods=["POST"])
+@app.route('/api/v1/auth/logout', methods=["POST"])
 def logout():
     if session.get("email") is not None:
         session.pop("email", None)
@@ -102,7 +103,7 @@ def logout():
 
 # Routes for Books
 """Endpoint for adding books and retrieving books."""
-@create_app.route('/api/v1/books', methods=['POST','GET'])
+@app.route('/api/v1/books', methods=['POST','GET'])
 def add_book():
     if request.method == "POST":
         ISBN = request.json.get('ISBN')
@@ -121,7 +122,7 @@ def add_book():
         return response
          
 """Endpoint for finding a book by its ISBN number"""
-@create_app.route('/api/v1/business/ISBN', methods=['GET'])
+@app.route('/api/v1/books/ISBN', methods=['GET'])
 def get_single_book(ISBN):
 
     if session.get('email') is not None:
@@ -129,10 +130,10 @@ def get_single_book(ISBN):
             msg = book_object.get_single_book(ISBN)
             response = jsonify(msg)
             return response
-    return jsonify({"message": "Please login to get business"})
+    return jsonify({"message": "Please login"})
 
-"""Endpoint for deleting business by its ISBN number"""
-@create_app.route('/api/v1/business/ISBN', methods=['DELETE'])
+"""Endpoint for deleting a book by its ISBN number"""
+@app.route('/api/v1/books/ISBN', methods=['DELETE'])
 def delete(ISBN):
     if session.get('title') is not None:
         if request.method == "DELETE":
@@ -140,10 +141,3 @@ def delete(ISBN):
             delete_book = book_object.delete(ISBN, title)
             return jsonify(delete_book)
     return jsonify({"message": "Please login to delete a book"})
-
-if __name__ == '__main__':
-    create_app.run(debug=True)
-
-    
-
-

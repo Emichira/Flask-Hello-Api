@@ -135,7 +135,7 @@ class User(object):
 
     def login(self, email, password):
         """ Login user by checking if user exists in
-            users_lisr
+            users_list
         """
         for user in self.user_list:
             if email == user['email']:
@@ -168,7 +168,7 @@ class User(object):
     
     @staticmethod
     def validate_password(password):
-        if len(password)<6:
+        if len(password)<8:
             return True
 
         return False
