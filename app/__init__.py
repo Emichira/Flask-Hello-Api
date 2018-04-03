@@ -129,10 +129,11 @@ def add_book():
          
 """Endpoint for finding a book by its ISBN number"""
 @app.route('/api/v1/books/ISBN', methods=['GET'])
-def get_single_book(ISBN):
+def get_single_book():
 
     if session.get('email') is not None:
         if request.method == "GET":
+            ISBN = request.json.get('ISBN')
             msg = book_object.get_single_book(ISBN)
             response = jsonify(msg)
             return response
