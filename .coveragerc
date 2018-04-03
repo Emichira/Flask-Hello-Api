@@ -1,0 +1,7 @@
+[report]
+
+omit = */python?.?/*
+    */site-packages/*
+    */site-packages/*
+    */usr/*
+    */instance/*
