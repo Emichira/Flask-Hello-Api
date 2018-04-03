@@ -76,7 +76,6 @@ def register():
 def login():
     email = request.json.get('email')
     password = request.json.get('password')
-    # session['email'] = email and session['password'] == password
     if email is None:
         return jsonify({'Message': 'Fill in  your email to register'})
     elif password is None:
@@ -88,14 +87,17 @@ def login():
 
 """Endpoint for a user reset password."""
 @app.route('/api/v1/auth/reset-password', methods=["POST"])
-def reset_password(email,password,confirm_password):
-    if session.get('email') is not None:
-        if request.method == "POST":
-            new_password = request.json['new_password']
-            confirm_password = request.json['confirm_password']
-            msg = user_object.reset_password(new_password, confirm_password)
-            return msg
-    return jsonify({"message": "User account does not exist, sign up"})
+def reset_password():
+    email = request.json.get('email')
+    new_password = request.json.get('new_password')
+    confirm_password = request.json.get('confirm_password')
+    
+    if request.method == "POST":    
+        if email is not None:
+            if new_password == confirm_password:
+                return jsonify({"message":"Password changed successful"})
+        return jsonify({"message": "Password and confirm password should match"})
+    return jsonify({"message":"User account does not exist, sign up!"})
 
 """Endpoint for a user to logout."""
 @app.route('/api/v1/auth/logout', methods=["POST"])
