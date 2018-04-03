@@ -112,9 +112,9 @@ class User(object):
 
         for user in self.user_list:
             if email == user['email']:
-                response = {"message":"Account already exists. Please login or Recover account"}
+                response = {"message":"Account already exists"}
                 return response
-        if len(password) < 8:
+        if len(password) < 6:
             response = {"message":"Input a password that is at least 6 characters long"}
             return response
 
@@ -176,7 +176,9 @@ class User(object):
     @staticmethod
     def validate_email(email):
         if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
-            return True
+            response = {"message":"Please a provide a valid email"}
+            return response
+        response = {"message":"The email address is valid"}
         return False
 
     @staticmethod
