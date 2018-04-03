@@ -75,8 +75,6 @@ class UserTestCase(unittest.TestCase):
         msg = self.user.register("", "djgjdbk432", "sgdsghds95", "role=admin")
         self.assertEqual(msg, {"message":"Please a provide a valid email"})
 
-
-
     def tearDown(self):
         """ Teardown Users Class test case  """
         del self.user

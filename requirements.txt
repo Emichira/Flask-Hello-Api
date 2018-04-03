@@ -19,3 +19,12 @@ singledispatch==3.4.0.3
 six==1.11.0
 Werkzeug==0.14.1
 wrapt==1.10.11
+Flask==0.12.2
+gunicorn==19.7.1
+behave==1.2.5
+WebTest==2.0.29
+mock==2.0.0
+Flask-DebugToolbar==0.10.1
+coverage==4.4.2
+Sphinx==1.6.5
+sphinx-autobuild==0.7.1
