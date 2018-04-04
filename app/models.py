@@ -92,9 +92,8 @@ class Book(object):
             if ISBN == book['ISBN']:
                 return book
             else:
-                response = {"message":"Book not found. Please search an already created book"}
+                response = {"message":"Book not found. Please search an already created book"}, 404
         return response 
-
 
 class User(object):
     user_list = [

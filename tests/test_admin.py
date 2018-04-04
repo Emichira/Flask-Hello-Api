@@ -4,23 +4,21 @@ import os, sys
 sys.path.append("..")
 from app import app
 from app.models import Book, User
-from flask import jsonify
+from flask import jsonify, Flask
+import flask_testing
 
 #class to respresent admin testcase
 class AdminApiEndpointTestCase(unittest.TestCase):
     
         def setUp(self):
-            #get the app test client
-            self.client = app.test_client
-                                #data to use
+            # get the app test client
+            self.client = app.test_client()
+            #data to use
             self.book= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
             "category": "Good Reads"}
             self.testbook= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
             "category": "Good Reads"}
             self.book = Book()
-
-        def tearDown(self):
-            del self.book
 
         def test_delete(self):
             # ISBN has not been provided
@@ -56,7 +54,6 @@ class AdminApiEndpointTestCase(unittest.TestCase):
 
             if book is not None:
                 self.assertEquals(book, self.book.get_single_book(ISBN))    
-
         
         def test_add_book(self):
             # Test all information is provided
@@ -70,7 +67,24 @@ class AdminApiEndpointTestCase(unittest.TestCase):
             author = "m"
             assert("Please input an author name with at least 2 character" in self.book.add_book("df", "Game of thrones", author, 2018/02/02, "Good Reads"))                       
             
-       
+        def test_api_add_book(self):
+            book = self.book.books_list[0]
+            ISBN = book["ISBN"]       
+
+            response = self.client.get('/api/v1/books', content_type='application/json')
+            print(response.data)
+            self.assertEquals(response.status, '200 OK')
+            assert(str(ISBN) in response.data)
+
+            # response = client.post('/api/v1/books', content_type='application/json',
+            #     data=json.dumps(dict(ISBN=00010, title = "Sam", author = "BigSam", date_published = 2018/02/28, category = "Good")))
+            # print(response.data)
+            # self.assertEquals(response.status, '201')
+            # assert()
+
+        def tearDown(self):
+            del self.book
+
 if __name__ == "__main__":
     unittest.main()
 
