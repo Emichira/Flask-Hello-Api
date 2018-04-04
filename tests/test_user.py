@@ -9,7 +9,7 @@ import run
 
 class UserTestCase(unittest.TestCase):
     def setUp(self):
-        self.client = app.test_client
+        self.client = app.test_client()
         self.login={"username":"emmanuel","password":"abc123"}
         self.reset={"email":"emmanuelmichira@gmail.com","password":"123456","confirm_password":"123456"}
         self.user={"email":"emmanuelmichira@gmail.com","password":"123456","role":"admin"}
@@ -24,7 +24,7 @@ class UserTestCase(unittest.TestCase):
     def test_home_route(self):
         # sends HTTP GET request to the application
         # on the specified path
-        result = self.client().get('/') 
+        result = self.client.get('/') 
 
         # assert the response data
         self.assertEqual(result.status_code,200, {'Message': 'Welcome to Hello Library'})
@@ -67,6 +67,21 @@ class UserTestCase(unittest.TestCase):
         """this will test if user with empty username will register"""
         msg = self.user.register("", "djgjdbk432", "sgdsghds95", "role=admin")
         self.assertEqual(msg, {"message":"Please a provide a valid email"})
+
+    def test_user_is_able_to_register(self):
+        """Test that user is able to register
+
+        ensure that a valid post request to /api/v1/auth/register 
+        registers a user
+        """
+        new_user = {
+            "email": "abc@abc.com30",
+            "password": "123456789030",
+            "confirm_password": "123456307890",
+            "role": "admin"
+            }
+        response = self.client.post("/api/v1/auth/register", data=json.dumps(new_user), content_type="application/json")
+        self.assertEquals(response.status_code, 200)
 
     
     def tearDown(self):
