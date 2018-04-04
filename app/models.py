@@ -1,7 +1,7 @@
 import re
 
 class Book(object):
-    book = [
+    books_list = [
         {
             'ISBN': 00001,
             'title': 'MacBeth',
@@ -21,40 +21,53 @@ class Book(object):
     """class to create instance of books"""
     def __init__(self):
         """ list to hold books a user creates """
-        self.books_list=[]
+        pass
+        # self.books_list=[]
+
+    def get_books(self):
+        return self.books_list
 
     """Adds a new book """
-    def add_book(self, ISBN, title, author, date_published, category):
-        
-        books_dict = {}
+    def add_book(self, ISBN=None, title=None, author=None, date_published=None, category=None):
 
-        for book in self.books_list:
-            if title == book["title"]:
-                response = {"message":"Please enter another book name, book name already exists"}
-                return response
-        
+        if None in [ISBN, title,author, date_published, category]:
+            return "Please input ISBN, title, author, date and category"
+
+        books_dict = {}
         if len(title) < 2:
             response = {"message":"Input a book name that is atleast 2 characters"}
             return response
 
-        elif not re.match("0?[1-9]|[12][0-9]|3[01])[/ -](0?[1-9]|1[12])[/ -](19[0-9]{2}|[2][0-9][0-9]{2}", date_published):
-            response = {"message": "Date published should be in the format DD/MM/YY"}
+        if len(author) < 2:
+            return "Please input an author name with at least 2 character"
+            
+        if not re.match("0?[1-9]|[12][0-9]|3[01])[/ -](0?[1-9]|1[12])[/ -](19[0-9]{2}|[2][0-9][0-9]{2}", date_published):
+            response = {"message": "Date published should be in the format YY/MM/DD"}
             return response
-        
-        elif len(author) > 1:
-            books_dict['ISBN'] = str(len(self.books_list) + 1)
-            books_dict['title'] = title
-            books_dict['author'] = author
-            books_dict['category'] = category
-            books_dict['date_published'] = date_published
+                
+        books_dict['ISBN'] = str(len(self.books_list) + 1)
+        books_dict['title'] = title
+        books_dict['author'] = author
+        books_dict['category'] = category
+        books_dict['date_published'] = date_published
 
-            self.books_list.append(books_dict)
+        self.books_list.append(books_dict)
+            
+        for book in self.books_list:
+            if title == book["title"]:
+                response = {"message":"Please enter another book name, book name already exists"}
+                return response
 
         response = {"message":"Book added successfully"}
         return response
 
     """Delete a book  """
-    def delete(self, ISBN, title):
+    def delete(self, ISBN =None, title =None):
+        if ISBN is None or ISBN is "":
+            return {"error": "You must specify ISBN number"}
+        if title is None or title is "":
+            return {"error": "You must specify Title"}
+       
         for book in self.books_list:
             if title == book["title"]:
                 if ISBN == book["ISBN"]:

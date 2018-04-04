@@ -1,6 +1,7 @@
 [report]
 
-omit = */python?.?/*
+omit = */venv/*
+    */python?.?/*
     */site-packages/*
     */site-packages/*
     */usr/*
