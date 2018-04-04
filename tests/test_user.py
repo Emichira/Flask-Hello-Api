@@ -83,6 +83,13 @@ class UserTestCase(unittest.TestCase):
         response = self.client.post("/api/v1/auth/register", data=json.dumps(new_user), content_type="application/json")
         self.assertEquals(response.status_code, 200)
 
+    def test_login(self):
+        """Tests that user is able to login"""
+        new_user = {"email": "abc@abc.com", "password": "1234567890"}
+
+        response = self.client.post('/api/v1/auth/login', data=json.dumps(new_user), content_type='application/json')
+        self.assertEquals(response.status_code, 200)
+
     
     def tearDown(self):
         """ Teardown Users Class test case  """
