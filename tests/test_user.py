@@ -111,7 +111,6 @@ class UserTestCase(unittest.TestCase):
             }
 
         response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
-        # self.assertEquals(response.status_code, 200)
         self.assertIn("Password do not match", str(response.data))
 
     def test_role_register(self):
@@ -122,9 +121,7 @@ class UserTestCase(unittest.TestCase):
             "confirm_password": "1234567890",
             "role": ""
             }
-
         response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
-        # self.assertEquals(response.status_code, 200)
         self.assertIn("Fill in  your role to register", str(response.data))
     
     def tearDown(self):
@@ -133,5 +130,3 @@ class UserTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-

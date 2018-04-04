@@ -150,4 +150,3 @@ def delete():
             delete_book = book_object.delete(ISBN, title)
             return jsonify(delete_book)
     return jsonify({"message": "Please login to delete a book"})
-

@@ -35,7 +35,6 @@ class AdminApiEndpointTestCase(unittest.TestCase):
             title = books_list[0]["title"]
             ISBN = books_list[0]["ISBN"]
 
-            print(title)
             if title is not None:
                 assert("Book deleted successfully" in str(self.book.delete(ISBN, title)))
 
@@ -98,14 +97,13 @@ class AdminApiEndpointTestCase(unittest.TestCase):
                 content_type='application/json')
             self.assertEquals(response.status_code, 200)
 
+        def test_api_retrieve_one_book(self):
+            """Test retrieveing a book"""
+            response = self.client.get('/api/v1/books/ISBN', content_type='application/json')
+            self.assertIn("Please login", str(response.data))
+
         def tearDown(self):
             del self.book
 
 if __name__ == "__main__":
     unittest.main()
-
-
-
-
-    
-    
