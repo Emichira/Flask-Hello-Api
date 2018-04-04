@@ -21,14 +21,6 @@ class UserTestCase(unittest.TestCase):
         self.user = User()
         self.book = Book()
 
-    def test_homepage(self):
-        # sends HTTP GET request to the application
-        # on the specified path
-        result = self.client().get('/') 
-
-        # assert the status code of the response
-        self.assertEqual(result.status_code, 200) 
-
     def test_home_route(self):
         # sends HTTP GET request to the application
         # on the specified path
@@ -37,7 +29,6 @@ class UserTestCase(unittest.TestCase):
         # assert the response data
         self.assertEqual(result.status_code,200, {'Message': 'Welcome to Hello Library'})
     
-        """ Checking if the user has an account """
     def test_if_user_is_registered(self):
     
         self.user.user_list = [{'email': 'abc@abc.com', 'password': 'gddgdg5'}]
@@ -77,6 +68,7 @@ class UserTestCase(unittest.TestCase):
         msg = self.user.register("", "djgjdbk432", "sgdsghds95", "role=admin")
         self.assertEqual(msg, {"message":"Please a provide a valid email"})
 
+    
     def tearDown(self):
         """ Teardown Users Class test case  """
         del self.user

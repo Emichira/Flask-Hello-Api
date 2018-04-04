@@ -4,5 +4,4 @@ omit = */venv/*
     */python?.?/*
     */site-packages/*
     */site-packages/*
-    */usr/*
     */instance/*

@@ -97,7 +97,7 @@ class Book(object):
 
 
 class User(object):
-    user = [
+    user_list = [
         {
             'email': 'abc@abc.com',
             'password': '12345678',
@@ -187,7 +187,7 @@ class User(object):
         return False
 
     @staticmethod
-    def validate_email(email):
+    def validate_email(email=None):
         if not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):
             response = {"message":"Please a provide a valid email"}
             return response
