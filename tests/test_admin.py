@@ -18,10 +18,58 @@ class AdminApiEndpointTestCase(unittest.TestCase):
             self.testbook= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
             "category": "Good Reads"}
             self.book = Book()
-        
 
         def tearDown(self):
             del self.book
+
+        def test_delete(self):
+            # ISBN has not been provided
+            # print(self.book.delete("", "MacBeth"))
+            assert("You must specify ISBN number" in str(self.book.delete("", "MacBeth")))
+
+            # Title has not been provided 
+            # print(self.book.delete(ISBN="0001"))
+            assert("You must specify Title" in str(self.book.delete(ISBN="0001")))
+
+            #Test suceesful delete
+            #Retrieve a valid book title
+            books_list = self.book.books_list
+            title = books_list[0]["title"]
+            ISBN = books_list[0]["ISBN"]
+
+            print(title)
+            if title is not None:
+                assert("Book deleted successfully" in str(self.book.delete(ISBN, title)))
+
+            # Unsuccessful delete
+            title = "stsUnsuccessful, Please delete an available booksfdsfds334432423"
+            ISBN = 1232564565465465465465465465465654
+            assert("Unsuccessful, Please delete an available book" in str(self.book.delete(ISBN, title)))
+
+        def test_get_single_book(self):
+            # ISBN not passed
+            assert("Book not found. Please search an already created book" in str(self.book.get_single_book(ISBN="0001")))
+
+            # Book found
+            book = self.book.books_list[0]
+            ISBN = book["ISBN"]
+
+            if book is not None:
+                self.assertEquals(book, self.book.get_single_book(ISBN))    
+
+        
+        def test_add_book(self):
+            # Test all information is provided
+            self.assertEquals("Please input ISBN, title, author, date and category", self.book.add_book())
+            
+            # Check for a valid book title
+            title = "i"
+            assert("Input a book name that is atleast 2 characters" in str(self.book.add_book("i", title, "manu", 2018/02/28, "Good Reads")))
+
+            # Check for a valid author
+            author = "m"
+            assert("Please input an author name with at least 2 character" in self.book.add_book("df", "Game of thrones", author, 2018/02/02, "Good Reads"))                       
+            
        
 if __name__ == "__main__":
     unittest.main()
