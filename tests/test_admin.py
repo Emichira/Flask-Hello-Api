@@ -68,6 +68,7 @@ class AdminApiEndpointTestCase(unittest.TestCase):
             assert("Please input an author name with at least 2 character" in self.book.add_book("df", "Game of thrones", author, 2018/02/02, "Good Reads"))                       
             
         def test_api_add_book(self):
+            """Tests is admin can add a book"""
             book = self.book.books_list[0]
             ISBN = book["ISBN"]       
 
@@ -86,6 +87,16 @@ class AdminApiEndpointTestCase(unittest.TestCase):
             response = self.client.post('/api/v1/books',
                 data=json.dumps(new_book), content_type='application/json')
             self.assertEquals(response.status_code, 201)
+
+        def test_api_delete(self):
+            """Tests book deletion"""
+            new_book = {            
+                "title": "Bruh",
+                "ISBN": "0001"
+                }
+            response = self.client.delete('/api/v1/books/ISBN', data=json.dumps(new_book),
+                content_type='application/json')
+            self.assertEquals(response.status_code, 200)
 
         def tearDown(self):
             del self.book

@@ -70,7 +70,6 @@ class UserTestCase(unittest.TestCase):
 
     def test_user_is_able_to_register(self):
         """Test that user is able to register
-
         ensure that a valid post request to /api/v1/auth/register 
         registers a user
         """
@@ -89,6 +88,9 @@ class UserTestCase(unittest.TestCase):
 
         response = self.client.post('/api/v1/auth/login', data=json.dumps(new_user), content_type='application/json')
         self.assertEquals(response.status_code, 200)
+
+    def test_delete(self):
+        """"""
 
     
     def tearDown(self):
