@@ -59,10 +59,10 @@ def register():
 
     if email is None:
         return jsonify({'Message': 'Fill in  your email to register'})
-    elif password is None:
+    if password is None:
         return jsonify({'Message': 'Fill in  your password to register'})
-    elif (role != 'user') and (role != 'admin'):
-        return jsonify({'Message': 'Fill in  your name to register'})
+    if (role != 'user') and (role != 'admin'):
+        return jsonify({'Message': 'Fill in  your role to register'})
     if len(password) < 8:
         return jsonify({'message': 'password should be more than 8 character'})
 

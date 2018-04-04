@@ -55,8 +55,7 @@ class UserTestCase(unittest.TestCase):
         """this will test if user can reset password"""
 
         msg = self.user.register("emmanuel@abc.com", "djgjdbk432", "sgdsghds95", "role=admin")
-        self.assertEqual(msg, {"message":"Password do not match"})
-
+        self.assertEqual(msg, {"message":"Password do not match"})  
 
     def test_api_can_validate_email(self):
         """this will test if user cannot register with an invalid email address"""
@@ -89,9 +88,46 @@ class UserTestCase(unittest.TestCase):
         response = self.client.post('/api/v1/auth/login', data=json.dumps(new_user), content_type='application/json')
         self.assertEquals(response.status_code, 200)
 
-    def test_delete(self):
-        """"""
+    def test_len_password_register(self):
+        """Test if password length is more than 8 characters"""
+        new_user = {
+            "email": "abc@abc.com",
+            "password": "",
+            "confirm_password": "1234567890",
+            "role": "admin"
+            }
 
+        response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
+        # self.assertEquals(response.status_code, 200)
+        self.assertIn('password should be more than 8 character', str(response.data))
+
+    def test_password_match_register(self):
+        """Tests if password and confirmation password match"""
+        new_user = {
+            "email": "abc@abc.com",
+            "password": "1234567890",
+            "confirm_password": "10",
+            "role": "admin"
+            }
+
+        response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
+        # self.assertEquals(response.status_code, 200)
+        self.assertIn("Password do not match", str(response.data))
+
+    def test_role_register(self):
+        """Tests if user has defined a role"""
+        new_user = {
+            "email": "abc@abc.com",
+            "password": "1234567890",
+            "confirm_password": "1234567890",
+            "role": ""
+            }
+
+        response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
+        # self.assertEquals(response.status_code, 200)
+        self.assertIn("Fill in  your role to register", str(response.data))
+
+        
     
     def tearDown(self):
         """ Teardown Users Class test case  """

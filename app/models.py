@@ -130,11 +130,11 @@ class User(object):
             response = {"message":"Input a password that is at least 6 characters long"}
             return response
 
-        elif not re.match(r"(^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-z]+$)", email):
+        if not re.match(r"(^[a-zA-Z0-9_.]+@[a-zA-Z0-9-]+\.[a-z]+$)", email):
             response = {"message":"Please a provide a valid email"}
             return response
 
-        elif password == confirm_password:
+        if password == confirm_password:
             user_dict['email'] = email
             user_dict['password'] = password
 
