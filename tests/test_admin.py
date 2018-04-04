@@ -76,11 +76,16 @@ class AdminApiEndpointTestCase(unittest.TestCase):
             self.assertEquals(response.status, '200 OK')
             assert(str(ISBN) in response.data)
 
-            # response = client.post('/api/v1/books', content_type='application/json',
-            #     data=json.dumps(dict(ISBN=00010, title = "Sam", author = "BigSam", date_published = 2018/02/28, category = "Good")))
-            # print(response.data)
-            # self.assertEquals(response.status, '201')
-            # assert()
+            new_book = {
+                "ISBN": "0001",
+                "title": "MacBeth",
+                "author": "Shakespear",
+                "date-published": "2018/02/02",
+                "category": "Good Reads"
+                }
+            response = self.client.post('/api/v1/books',
+                data=json.dumps(new_book), content_type='application/json')
+            self.assertEquals(response.status_code, 201)
 
         def tearDown(self):
             del self.book

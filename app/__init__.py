@@ -125,6 +125,7 @@ def add_book():
     elif request.method == "GET":
         msg = book_object.get_all()
         response = jsonify(msg)
+        response.status_code = 200
         return response
          
 """Endpoint for finding a book by its ISBN number"""
