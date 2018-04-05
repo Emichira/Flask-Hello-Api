@@ -1,48 +1,29 @@
 import os
-from flask import Flask, jsonify, request, session, abort, make_response, render_template
+from flask import Flask, jsonify, request, session, make_response
 from flask_restful import reqparse, abort, Resource
 from models import User, Book
+from flask_jwt_extended import (
+    JWTManager, jwt_required, get_jwt_identity,
+    create_access_token, create_refresh_token,
+    jwt_refresh_token_required, get_raw_jwt)
+from functools import wraps
 
 app =  Flask(__name__)
 
-user = [
-        {
-            'email': 'abc@abc.com',
-            'password': '12345678',
-            'role': 'user'
-        },
-        {
-            'email': 'emmanuel@abc.com',
-            'password': '87654321',
-            'role': 'admin'
-        }
-        ]
-
-book = [
-        {
-            'ISBN': 00001,
-            'title': 'MacBeth',
-            'author': 'William Shakespear',
-            'date_published': '02/02/2018',
-            'category': 'History'
-        },
-        {
-            'ISBN': 00002,
-            'title': 'Long Walk To Freedom',
-            'author': 'Nelson Mandela',
-            'date_published': '02/02/2018',
-            'category': 'Biography'
-        }
-    ]
-
-user_list = []
-new_user={}
-books_list=[]
-user_dict = {}
+# Enable blacklisting and specify what kind of tokens to check against the blacklist
+app.config['JWT_SECRET_KEY'] = 'hello-api!'  # Change this!
+app.config['JWT_BLACKLIST_ENABLED'] = True
+app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
+jwt = JWTManager(app)
 
 user_object = User()
 book_object = Book()
-
+    
+@app.errorhandler(400)
+def bad_request(error):
+    """Custom error handler for bad requests"""
+    return jsonify(dict(error = 'Bad request, please add input details')), 400
+    
 @app.route('/', methods=['GET'])
 def home_route():
     """ HomePage route """
@@ -52,26 +33,34 @@ def home_route():
 """Endpoint for a new user to register."""
 @app.route('/api/v1/auth/register', methods=['POST'])
 def register():
+    details = request.get_json()
+    if not details:
+        return jsonify({"message": "Please add input details"})
     email = request.json.get('email')
     password = request.json.get('password')
     confirm_password = request.json['confirm_password']
     role = request.json.get('role')
 
+    for user in user_object.user_list:
+            if email == user['email'] and password == user['email']:
+                response = {"message":"Account already exists"}
+                return response
+
     if email is None:
         return jsonify({'Message': 'Fill in  your email to register'})
     if password is None:
         return jsonify({'Message': 'Fill in  your password to register'})
+    if password != confirm_password:
+        return jsonify({'message': 'Passwords should match'})
     if (role != 'user') and (role != 'admin'):
         return jsonify({'Message': 'Fill in  your role to register'})
     if len(password) < 8:
         return jsonify({'message': 'password should be more than 8 character'})
 
-    msg = user_object.register(email, password, confirm_password, role)
-    response = jsonify(msg)
-    response.status_code = 200
+    response = jsonify(user_object.register(email, password, confirm_password, role))
+    response.status_code = 201
     return response
 
-"""Endpoint for a user to login."""
 @app.route('/api/v1/auth/login', methods=['POST'])
 def login():
     email = request.json.get('email')

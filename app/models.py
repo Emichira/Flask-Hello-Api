@@ -31,6 +31,11 @@ class Book(object):
     def add_book(self, ISBN=None, title=None, author=None, date_published=None, category=None):
         books_dict = {}
 
+        for book in self.books_list:
+            if title == book["title"]:
+                response = {"message":"Please enter another book name, book name already exists"}
+                return response
+
         if None in [ISBN, title,author, date_published, category]:
             return "Please input ISBN, title, author, date and category"
 
@@ -45,11 +50,6 @@ class Book(object):
             response = {"message": "Date published should be in the format YY/MM/DD"}
             return response
                         
-        for book in self.books_list:
-            if title == book["title"]:
-                response = {"message":"Please enter another book name, book name already exists"}
-                return response
-        
         books_dict['ISBN'] = str(len(self.books_list) + 1)
         books_dict['title'] = title
         books_dict['author'] = author
@@ -154,7 +154,7 @@ class User(object):
                     return response
                 response = {"message":"Password Incorrect"}
                 return response
-        response = {"message":"User account does not exist, please sign up"}
+        response = {"message":"User account does not exist, Register account"}
         return response
 
     def reset_password(self, new_password, confirm_password):

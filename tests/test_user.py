@@ -33,7 +33,7 @@ class UserTestCase(unittest.TestCase):
     
         self.user.user_list = [{'email': 'abc@abc.com', 'password': 'gddgdg5'}]
         msg = self.user.login("abc@abc", "gddgdg5")
-        self.assertEqual(msg, {"message":"User account does not exist, please sign up"})
+        self.assertEqual(msg, {"message":"User account does not exist, Register account"})
         
     def test_register(self):
         # Test if user can successfully registered a user account
@@ -99,7 +99,7 @@ class UserTestCase(unittest.TestCase):
 
         response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
         # self.assertEquals(response.status_code, 200)
-        self.assertIn('password should be more than 8 character', str(response.data))
+        self.assertIn("Passwords should match", str(response.data))
 
     def test_password_match_register(self):
         """Tests if password and confirmation password match"""
@@ -111,7 +111,7 @@ class UserTestCase(unittest.TestCase):
             }
 
         response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
-        self.assertIn("Password do not match", str(response.data))
+        self.assertIn("Passwords should match", str(response.data))
 
     def test_role_register(self):
         """Tests if user has defined a role"""
