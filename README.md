@@ -52,9 +52,8 @@ Hello-Books is a simple application that helps manage a library and its processe
 ## Testing
 To run the tests for the app, run;
 
-	```
-	nosetests -v
-	```
+* nosetests -v
+
 
 ## Authors
 
