@@ -36,7 +36,7 @@ class UserTestCase(unittest.TestCase):
         self.assertEqual(msg, {"message":"User account does not exist, please sign up"})
         
     def test_register(self):
-        
+        # Test if user can successfully registered a user account
         msg = self.user.register("mich@anuel.com", "wertrWER4", "wertrWER4", "role=user")
         self.assertEqual(msg, {"message":"Successfully registered a user account"})
 
@@ -51,7 +51,7 @@ class UserTestCase(unittest.TestCase):
         msg = self.user.register("emmanuel@abc.com", "test", "test","role=user")
         self.assertEqual(msg, {"message":"Input a password that is at least 6 characters long"})
 
-    def test_api_reset_password(self):
+    def test_reset_password(self):
         """this will test if user can reset password"""
 
         msg = self.user.register("emmanuel@abc.com", "djgjdbk432", "sgdsghds95", "role=admin")
@@ -123,6 +123,14 @@ class UserTestCase(unittest.TestCase):
             }
         response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
         self.assertIn("Fill in  your role to register", str(response.data))
+
+    def test_api_reset_password(self):
+        new_user = {"email": "abc@abc.com", "new_password": "123450", "confirm_password": "1234567890"}
+
+        response = self.client.post('/api/v1/auth/reset-password', data=json.dumps(new_user), content_type='application/json')
+        self.assertIn("Password and confirm password should match", str(response.data))
+
+        
     
     def tearDown(self):
         """ Teardown Users Class test case  """
