@@ -29,11 +29,11 @@ class Book(object):
 
     """Adds a new book """
     def add_book(self, ISBN=None, title=None, author=None, date_published=None, category=None):
+        books_dict = {}
 
         if None in [ISBN, title,author, date_published, category]:
             return "Please input ISBN, title, author, date and category"
 
-        books_dict = {}
         if len(title) < 2:
             response = {"message":"Input a book name that is atleast 2 characters"}
             return response
@@ -44,7 +44,12 @@ class Book(object):
         if not re.match("0?[1-9]|[12][0-9]|3[01])[/ -](0?[1-9]|1[12])[/ -](19[0-9]{2}|[2][0-9][0-9]{2}", date_published):
             response = {"message": "Date published should be in the format YY/MM/DD"}
             return response
-                
+                        
+        for book in self.books_list:
+            if title == book["title"]:
+                response = {"message":"Please enter another book name, book name already exists"}
+                return response
+        
         books_dict['ISBN'] = str(len(self.books_list) + 1)
         books_dict['title'] = title
         books_dict['author'] = author
@@ -52,11 +57,6 @@ class Book(object):
         books_dict['date_published'] = date_published
 
         self.books_list.append(books_dict)
-            
-        for book in self.books_list:
-            if title == book["title"]:
-                response = {"message":"Please enter another book name, book name already exists"}
-                return response
 
         response = {"message":"Book added successfully"}
         return response
@@ -96,6 +96,8 @@ class Book(object):
         return response 
 
 class User(object):
+    """ user_list will contain a dictionery of created users"""
+
     user_list = [
         {
             'email': 'abc@abc.com',
@@ -110,12 +112,8 @@ class User(object):
         ]
     # return user
     """ User class handles registration and login of users """
-    """ user_list will contain a dictionery of created users"""
     
     def __init__(self):
-        # self.email = email
-        # self.password = password
-        # self.role = role
         self.user_list=[]
 
     def register(self, email, password, confirm_password, role):
