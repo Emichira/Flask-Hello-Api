@@ -101,6 +101,10 @@ class AdminApiEndpointTestCase(unittest.TestCase):
             response = self.client.get('/api/v1/books/ISBN', content_type='application/json')
             self.assertIn("Please login", str(response.data))
 
+        def test_api_get_all_books(self):
+            result = self.book.get_all()
+            self.assertEquals(result, self.book.books_list)
+
         def tearDown(self):
             del self.book
 
