@@ -5,7 +5,6 @@ sys.path.append("..")
 from app import app
 from app.models import Book, User
 from flask import jsonify, Flask
-import flask_testing
 
 #class to respresent admin testcase
 class AdminApiEndpointTestCase(unittest.TestCase):
