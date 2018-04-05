@@ -6,7 +6,7 @@ Hello-Books is a simple application that helps manage a library and its processe
 
 [![Build Status](https://travis-ci.org/Emichira/Flask-Hello-Api.svg?branch=api)](https://travis-ci.org/Emichira/Flask-Hello-Api)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bfc582da0c7725676599/maintainability)](https://codeclimate.com/github/Emichira/Flask-Hello-Api/maintainability)
-[![Coverage Status](https://coveralls.io/repos/github/Emichira/Flask-Hello-Api/badge.svg?branch=api)](https://coveralls.io/github/Emichira/Flask-Hello-Api?branch=api)
+[![Coverage Status](https://coveralls.io/repos/github/Emichira/Flask-Hello-Api/badge.svg)](https://coveralls.io/github/Emichira/Flask-Hello-Api)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/189eb2e03d0540ae95a1c1cf732ebf39)](https://www.codacy.com/app/Emichira/Flask-Hello-Api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Emichira/Flask-Hello-Api&amp;utm_campaign=Badge_Grade)
 
 ## Endpoints

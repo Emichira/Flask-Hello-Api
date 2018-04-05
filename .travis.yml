@@ -9,7 +9,7 @@ install:
   - pip install codecov
 
 notifications:
-   webhooks: https://coveralls.io/webhook?repo_token=cwptp15kEnSH8qBehr0WTfrds5wAA52wf
+   webhooks: https://coveralls.io/webhook?repo_token=jAIa5YodnvyloADxpizQ6Fhyg24O38k4b
 
 # command to run tests
 script:
