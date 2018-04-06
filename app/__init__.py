@@ -29,6 +29,21 @@ def check_if_token_in_blacklist(decrypted_token):
 def bad_request(error):
     """Custom error handler for bad requests"""
     return jsonify(dict(error = 'Bad request, please add input details')), 400
+
+@app.errorhandler(401)
+def unauthorised(error):
+    """Custom error handler for bad requests"""
+    return jsonify(dict(error = 'Unauthorised, request lacks valid authentication details.')), 401
+
+@app.errorhandler(404)
+def not_found(error):
+    """Custom error handler for bad requests"""
+    return jsonify(dict(error = 'Not Found, resource not found')), 404
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    """Custom error handler for bad requests"""
+    return jsonify(dict(error = 'Internal server error')), 500
     
 @app.route('/', methods=['GET'])
 def home_route():
@@ -47,9 +62,9 @@ def register():
     role = request.json.get('role')
 
     for user in user_object.user_list:
-            if email == user['email'] and password == user['password']:
-                response = {"message":"Account already exists"}
-                return response
+        if email == user['email'] and password == user['password']:
+            response = {"message":"Account already exists"}
+            return response
 
     if email is None:
         return jsonify({'Message': 'Fill in  your email to register'})
