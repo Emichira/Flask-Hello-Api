@@ -121,9 +121,10 @@ class User(object):
         user_dict = {}
 
         for user in self.user_list:
-            if email == user['email']:
+            if email == user['email'] and password == user['password']:
                 response = {"message":"Account already exists"}
                 return response
+                
         if len(password) < 6:
             response = {"message":"Input a password that is at least 6 characters long"}
             return response
@@ -154,6 +155,8 @@ class User(object):
                     return response
                 response = {"message":"Password Incorrect"}
                 return response
+            response = {"message":"Password Incorrect"}
+            return response
         response = {"message":"User account does not exist, Register account"}
         return response
 

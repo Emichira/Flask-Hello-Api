@@ -18,6 +18,12 @@ jwt = JWTManager(app)
 
 user_object = User()
 book_object = Book()
+blacklist = set()
+
+@jwt.token_in_blacklist_loader
+def check_if_token_in_blacklist(decrypted_token):
+    jti = decrypted_token['jti']
+    return jti in blacklist
     
 @app.errorhandler(400)
 def bad_request(error):
@@ -33,8 +39,7 @@ def home_route():
 """Endpoint for a new user to register."""
 @app.route('/api/v1/auth/register', methods=['POST'])
 def register():
-    details = request.get_json()
-    if not details:
+    if not request.get_json:
         return jsonify({"message": "Please add input details"})
     email = request.json.get('email')
     password = request.json.get('password')
@@ -42,7 +47,7 @@ def register():
     role = request.json.get('role')
 
     for user in user_object.user_list:
-            if email == user['email'] and password == user['email']:
+            if email == user['email'] and password == user['password']:
                 response = {"message":"Account already exists"}
                 return response
 
@@ -61,18 +66,32 @@ def register():
     response.status_code = 201
     return response
 
+"""Endpoint for a user to login."""
 @app.route('/api/v1/auth/login', methods=['POST'])
 def login():
+    if not request.is_json:
+        return jsonify({"message": "Please add input details"})
     email = request.json.get('email')
     password = request.json.get('password')
-    if email is None:
+    # role = request.json.get('role')
+    
+    if not email or "":
         return jsonify({'Message': 'Fill in  your email to register'})
-    elif password is None:
+    if not password or "":
         return jsonify({'Message': 'Fill in  your password to register'})
-    msg = user_object.login(email, password)
-    response = jsonify(msg)
-    response.status_code = 200
+        
+    for user in user_object.user_list:
+        if email == user['email']:
+            if password == user['password']:
+                token = {
+                    'access_token': create_access_token(identity=email)
+                }
+                return jsonify(token, {"message" : "Login successful"}), 200
+            return jsonify({"message":"Password Incorrect"})
+        return jsonify({"message":"Email Incorrect"})
+    response = jsonify({"message":"User account does not exist, Register account"})
     return response
+
 
 """Endpoint for a user reset password."""
 @app.route('/api/v1/auth/reset-password', methods=["POST"])
@@ -90,11 +109,11 @@ def reset_password():
 
 """Endpoint for a user to logout."""
 @app.route('/api/v1/auth/logout', methods=["POST"])
+@jwt_required
 def logout():
-    if session.get("email") is not None:
-        session.pop("email", None)
-        return jsonify({"message": "Logout successful"})
-    return jsonify({"message": "You are not logged in"}) 
+    jti = get_raw_jwt()['jti']
+    blacklist.add(jti)
+    return jsonify({"msg": "Successfully logged out"}), 200
 
 # Routes for Books
 """Endpoint for adding books and retrieving books."""
