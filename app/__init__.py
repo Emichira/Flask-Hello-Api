@@ -110,6 +110,7 @@ def login():
 
 """Endpoint for a user reset password."""
 @app.route('/api/v1/auth/reset-password', methods=["POST"])
+@jwt_required
 def reset_password():
     email = request.json.get('email')
     new_password = request.json.get('new_password')

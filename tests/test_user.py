@@ -122,15 +122,7 @@ class UserTestCase(unittest.TestCase):
             "role": ""
             }
         response = self.client.post('/api/v1/auth/register', data=json.dumps(new_user), content_type='application/json')
-        self.assertIn("Fill in  your role to register", str(response.data))
-
-    def test_api_reset_password(self):
-        new_user = {"email": "abc@abc.com", "new_password": "123450", "confirm_password": "1234567890"}
-
-        response = self.client.post('/api/v1/auth/reset-password', data=json.dumps(new_user), content_type='application/json')
-        self.assertIn("Password and confirm password should match", str(response.data))
-
-        
+        self.assertIn("Fill in  your role to register", str(response.data))        
     
     def tearDown(self):
         """ Teardown Users Class test case  """
