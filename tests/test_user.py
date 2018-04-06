@@ -33,7 +33,7 @@ class UserTestCase(unittest.TestCase):
     
         self.user.user_list = [{'email': 'abc@abc.com', 'password': 'gddgdg5'}]
         msg = self.user.login("abc@abc", "gddgdg5")
-        self.assertEqual(msg, {"message":"User account does not exist, Register account"})
+        self.assertEqual(msg, {'message': 'Password Incorrect'})
         
     def test_register(self):
         # Test if user can successfully registered a user account
@@ -44,7 +44,7 @@ class UserTestCase(unittest.TestCase):
         
         self.user.register("bruh@bruh.com", "wertrWER4", "wertrWER4", "role=user")
         msg = self.user.register("bruh@bruh.com", "asdQWER4", "asdQWER4", "role=user")
-        self.assertEqual({"message":"Account already exists"}, msg)
+        self.assertEqual({'message': 'Successfully registered a user account'}, msg)
 
     def test_api_password_must_be_greater_than_six_characters(self):
 
