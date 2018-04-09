@@ -6,7 +6,6 @@ from flask_jwt_extended import (
     JWTManager, jwt_required, get_jwt_identity,
     create_access_token, create_refresh_token,
     jwt_refresh_token_required, get_raw_jwt)
-from functools import wraps
 
 app =  Flask(__name__)
 
