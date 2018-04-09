@@ -25,7 +25,9 @@ enum34==1.1.6
 Flask==0.12.2
 Flask-API==1.0
 Flask-DebugToolbar==0.10.1
+Flask-JWT-Extended==3.7.2
 Flask-RESTful==0.3.6
+Flask-Testing==0.7.1
 funcsigs==1.0.2
 futures==3.2.0
 gunicorn==19.7.1
@@ -48,6 +50,7 @@ port-for==0.3.1
 pycodestyle==2.3.1
 pycparser==2.18
 Pygments==2.2.0
+PyJWT==1.6.1
 pylint==1.8.3
 pyOpenSSL==17.5.0
 pytz==2018.3
