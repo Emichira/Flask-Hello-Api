@@ -58,7 +58,7 @@ def register():
         return jsonify({"message": "Please add input details"})
     email = request.json.get('email')
     password = request.json.get('password')
-    confirm_password = request.json['confirm_password']
+    confirm_password = request.json.get['confirm_password']
     role = request.json.get('role')
 
     for user in user_object.user_list:
