@@ -1,109 +1,112 @@
 import unittest
-<<<<<<< HEAD
-import os
 import json
-from app import create_app
-from app.models import Book
-from flask import jsonify
-=======
-import json
-from app import create_app
+import os, sys
+sys.path.append("..")
+from app import app
 from app.models import Book, User
-from flask import jsonify
-import run
->>>>>>> d37a60234166bd7746c8d4a98125128239ededd1
+from flask import jsonify, Flask
 
 #class to respresent admin testcase
 class AdminApiEndpointTestCase(unittest.TestCase):
     
         def setUp(self):
-<<<<<<< HEAD
-            self.app=create_app(config_name="testing")
-                    #get the app test client
-            self.client = self.app.test_client
-                    #data to use
-=======
-            self.client = run.create_app.test_client
->>>>>>> d37a60234166bd7746c8d4a98125128239ededd1
+            # get the app test client
+            self.client = app.test_client()
+            #data to use
             self.book= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
             "category": "Good Reads"}
             self.testbook= {"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
             "category": "Good Reads"}
+            self.book = Book()
+
+        def test_delete(self):
+            # ISBN has not been provided
+            # print(self.book.delete("", "MacBeth"))
+            assert("You must specify ISBN number" in str(self.book.delete("", "MacBeth")))
+
+            # Title has not been provided 
+            # print(self.book.delete(ISBN="0001"))
+            assert("You must specify Title" in str(self.book.delete(ISBN="0001")))
+
+            #Test suceesful delete
+            #Retrieve a valid book title
+            books_list = self.book.books_list
+            title = books_list[0]["title"]
+            ISBN = books_list[0]["ISBN"]
+
+            if title is not None:
+                assert("Book deleted successfully" in str(self.book.delete(ISBN, title)))
+
+            # Unsuccessful delete
+            title = "stsUnsuccessful, Please delete an available booksfdsfds334432423"
+            ISBN = 1232564565465465465465465465465654
+            assert("Unsuccessful, Please delete an available book" in str(self.book.delete(ISBN, title)))
+
+        def test_get_single_book(self):
+            # ISBN not passed
+            assert("Book not found. Please search an already created book" in str(self.book.get_single_book(ISBN="0001")))
+
+            # Book found
+            book = self.book.books_list[0]
+            ISBN = book["ISBN"]
+
+            if book is not None:
+                self.assertEquals(book, self.book.get_single_book(ISBN))    
         
-        def test_api_book_creation(self):
-            #test if the api can create a business 
-            res=self.client().post('/api/v1/books', data=self.book)
-            self.assertEqual(res.status_code,201)
-            # self.assertIn("MacBeth",str(res.data))
-
-        def test_api_can_get_all_books(self):
-            #tests if the api can get all the books
-            res=self.client().post('/api/v1/books', data=self.book)
-
-            self.assertEqual(res.status_code,201)
-
-            result=self.client().get('/api/v1/books')
-
-            self.assertEqual(result.status_code,200)
-
-            # self.assertIn("MacBeth",str(res.data))
-
-        def test_api_can_get_books_by_id(self):
-            res=self.client().post('/api/v1/books', data=self.book)
-            res.test=self.client().post('/api/v1/books', data=self.testbook)
-
-            self.assertEqual(res.status_code,201)
-            #convert response to json
-            result_in_json=json.loads(res.data.decode('utf-8').replace("'", "\""))
-
-            #make get request and add the id
-            get_request=self.client().get('/api/v1/books/{}'.format(result_in_json['id']))
-
-            #assert the request status
-            self.assertEqual(get_request.status_code,200)
-        
-        def test_api_can_modify_book(self):
-    
-            #tests if a the api can get a books and edit it 
-            res=self.client().post('/api/v1/books', data=self.book)
-
-            self.assertEqual(res.status_code,201)
-            #convert response into json so as to get the id
-            result_in_json=json.loads(res.data.decode('utf-8').replace("'", "\""))
-
-            #make a put request
-            #this edits the current book
-            put_request=self.client().put('/api/v1/books/{}'.format(result_in_json['id']), data={"ISBN": "00001", "Title": "MacBeth", "Author": "Shakespear", "Date-Published": "12/10/2018",
-            "category": "Good Reads"})
-
-            self.assertEqual(put_request.status_code,200)
-
-        def test_api_deletes_books(self):
-            #test if api can delete a book
-            res=self.client().post('/api/v1/books', data=self.book)
-
-            self.assertEqual(res.status_code,201)
-            #convert response into json so as to get the id
-            result_in_json=json.loads(res.data.decode('utf-8').replace("'", "\""))
+        def test_add_book(self):
+            # Test all information is provided
+            self.assertEquals("Please input ISBN, title, author, date and category", self.book.add_book())
             
-            #delete and pass in the id
-            result=self.client().delete('/api/v1/books/{}'.format(result_in_json['id']))
+            # Check for a valid book title
+            title = "i"
+            assert("Input a book name that is atleast 2 characters" in str(self.book.add_book("i", title, "manu", 2018/02/28, "Good Reads")))
 
-            # self.assertEqual(result.status_code,200)
-            #try to run get request for deleted business
-            deleted_books=self.client().get('/api/v1/books/{}'.format(result_in_json['id']))
+            # Check for a valid author
+            author = "m"
+            assert("Please input an author name with at least 2 character" in self.book.add_book("df", "Game of thrones", author, 2018/02/02, "Good Reads"))                       
             
-            #should return 404
-            self.assertEqual(deleted_books.status_code,404)
+        def test_api_add_book(self):
+            """Tests is admin can add a book"""
+            book = self.book.books_list[0]
+            ISBN = book["ISBN"]       
 
-            
+            response = self.client.get('/api/v1/books', content_type='application/json')
+            print(response.data)
+            self.assertEquals(response.status, '200 OK')
+            assert(str(ISBN) in response.data)
+
+            new_book = {
+                "ISBN": "0001",
+                "title": "MacBeth",
+                "author": "Shakespear",
+                "date-published": "2018/02/02",
+                "category": "Good Reads"
+                }
+            response = self.client.post('/api/v1/books',
+                data=json.dumps(new_book), content_type='application/json')
+            self.assertEquals(response.status_code, 201)
+
+        def test_api_delete(self):
+            """Tests book deletion"""
+            new_book = {            
+                "title": "Bruh",
+                "ISBN": "0001"
+                }
+            response = self.client.delete('/api/v1/books/ISBN', data=json.dumps(new_book),
+                content_type='application/json')
+            self.assertEquals(response.status_code, 200)
+
+        def test_api_retrieve_one_book(self):
+            """Test retrieveing a book"""
+            response = self.client.get('/api/v1/books/ISBN', content_type='application/json')
+            self.assertIn("Please login", str(response.data))
+
+        def test_api_get_all_books(self):
+            result = self.book.get_all()
+            self.assertEquals(result, self.book.books_list)
+
+        def tearDown(self):
+            del self.book
+
 if __name__ == "__main__":
     unittest.main()
-    #test API can get a single book using its id
-    #test API can edit/modify an existing book
-    #test API can delete an existing book
-
-
-
-    
-    
